@@ -1,0 +1,61 @@
+# Configure NTP on Nexus switch and verify status
+# Tested on nxosv 9000
+#
+
+---
+
+- name: Adding NTP configuration on Nexus switch
+  hosts: nxos
+  connection: local
+  gather_facts: no
+
+  vars:
+    provider:
+      username: admin
+      password: password
+      transport: nxapi
+      host: "{{ inventory_hostname }}"
+
+
+  tasks:
+
+  - name: ensure primary ntp server is configured
+    nxos_ntp:
+      server: "{{ ntp_primary }}"
+      prefer: enabled
+      source_int: mgmt0
+      vrf_name: management
+      state: present
+      provider: "{{ provider }}"
+
+  - name: ensure secondary ntp server is configured
+    nxos_ntp:
+      server: "{{ ntp_secondary }}"
+      prefer: disabled
+      source_int: mgmt0
+      vrf_name: management
+      state: present
+      provider: "{{ provider }}"
+
+	# Pause 5 minutes to allow NTP to sync
+  - pause:
+      minutes: 5
+
+  - name: Get NTP status
+    nxos_command:
+      commands:
+        - show ntp peer-status
+      provider: "{{ provider }}"
+    register: output
+
+  - debug:
+      var: output
+
+  - assert:
+      that:
+        - "'*' in output ['stdout'][0]['TABLE_peersstatus']['ROW_peersstatus'][0]['syncmode']"
+
+
+
+  	
+ 
