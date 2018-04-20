@@ -1,0 +1,28 @@
+# Perform OS version compliance check on IOS device
+
+---
+
+  - name: Verify software version on IOS device 
+    hosts: ios-xe
+    connection: local
+    gather_facts: no
+
+    vars:
+      provider:
+        username: admin
+        password: mypassword
+        host: "{{ inventory_hostname }}"
+
+    tasks:
+
+      - name: 
+        ios_command:
+          commands:
+            - show version
+          provider: "{{ provider }}"
+        register: output
+
+      - name: Verify OS version is correct
+        assert:
+          that:
+            - "'Version 16.3' in output['stdout'][0]"
