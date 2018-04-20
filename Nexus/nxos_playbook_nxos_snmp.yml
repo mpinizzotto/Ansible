@@ -12,10 +12,10 @@
   
   vars:
     provider:
-	  username: admin
-	  password: password
-	  transport: nxapi
-	  host: "{{ inventory_hostname }}"
+      username: admin
+      password: password
+      transport: nxapi
+      host: "{{ inventory_hostname }}"
 
   task:
   
@@ -25,38 +25,38 @@
   	  access: ro
   	  state: present
   	  provider: "{{ provider }}"
-  	
+	  
   - name: ensure snmp contact is configured
     contact: myemail@home.local
-  	  state: present
-  	  provider: "{{ provider }}"
-  	
+      state: present
+      provider: "{{ provider }}"
+
   - name: ensure snmp location is configured
     nxos_snmp_location:
-	  location: mylocation
-	  state: present
-  	  provider: "{{ provider }}"
+      location: mylocation
+      state: present
+      provider: "{{ provider }}"
   	
   - name: ensure snmp v3 user is configured
     nxos_snmp_user: 
       user: snmpuser
-	  authentication: sha
-	  encrypt: true
-	  group: network-operator
-	  pwd: password
-	  privacy: password
-	  state: present
-  	  provider: "{{ provider }}"
-  	
+      authentication: sha
+      encrypt: true
+      group: network-operator
+      pwd: password
+      privacy: password
+      state: present
+      provider: "{{ provider }}"
+	  
   - name: ensure v2c snmp host is configured
     nxos_snmp_host: 
       community: mycommunity
-  	  snmp_host: 10.1.1.1
-  	  snmp_trap: trap
-  	  src_intf: mgmt0
-	  version: v2c
-	  vrf: management
-	  state: present
-  	  provider: "{{ provider }}"
+      snmp_host: 10.1.1.1
+      snmp_trap: trap
+      src_intf: mgmt0 
+      version: v2c
+      vrf: management
+      state: present
+      provider: "{{ provider }}"
   	
  

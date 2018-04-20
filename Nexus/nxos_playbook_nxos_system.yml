@@ -11,22 +11,22 @@
   
   vars:
     provider:
-	  username: admin
-	  password: password
-	  transport: nxapi
-	  host: "{{ inventory_hostname }}"
+      username: admin
+      password: password
+      transport: nxapi
+      host: "{{ inventory_hostname }}"
 
   tasks:
   
   - name: ensure hostname is configured
     nxos_system:
       hostname: "{{ inventory_hostname }}"
-  	  state: present
-  	  provider: "{{ provider }}"
+      state: present
+      provider: "{{ provider }}"
   	
   - name: ensure domain-name is configured
     nxos_system:
       domain_name: home.local	
-  	  state: present
-  	  provider: "{{ provider }}"
+      state: present
+      provider: "{{ provider }}"
   	
